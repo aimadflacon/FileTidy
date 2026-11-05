@@ -53,4 +53,11 @@ public class CategoryRule {
 	public Set<String> getExtentenciones() {
 		return Collections.unmodifiableSet(extentenciones);
 	}
+
+	@Override
+	public String toString() {
+		return "CategoryRule [categoryName=" + categoryName + ", extentenciones=" + extentenciones + "]";
+	}
+	
+	
 }
