@@ -11,14 +11,22 @@ public class DuplicateResolver {
 			return targetPath;
 		}
 
-		Path pathFolder = targetPath.getParent();
+		Path parentFolder = targetPath.getParent();
 		String originalFileName = targetPath.getFileName().toString();
 
 		String nameWithoutExt =  getFileNameWithoutExtension(originalFileName);
 		String nameExtension = getFileExtension(originalFileName);
 
-		//falta un do while 
-		return pathFolder;
+		int counter = 1;
+		Path resolvedPath;
+		
+		do {
+			String newFileName = nameWithoutExt + "_" + counter + nameExtension;
+			resolvedPath = parentFolder.resolve(newFileName);
+			counter++;
+		}while(Files.exists(resolvedPath));
+		
+		return resolvedPath;
 	}
 
 
