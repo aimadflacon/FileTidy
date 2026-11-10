@@ -23,7 +23,7 @@ public class ScanReport {
 	}
 	/*registra un archivo en su categoria especifica y si la categoria no existe en el mapa la crea automaticamente con una lista vacia*/
 	public void addFile(String nombreCategoria, Path archivo) {
-		archivosCategorizados.computeIfAbsent(nombreCategoria, k -> new ArrayList<>()).add(archivo);
+		this.archivosCategorizados.computeIfAbsent(nombreCategoria, k -> new ArrayList<>()).add(archivo);
 	}
 
 	/*anade la ruta del archivo a la lista de archivos con categoria no conocida*/	
