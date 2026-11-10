@@ -11,6 +11,7 @@ import model.CategoryRule;
 import model.ScanReport;
 
 public class FileOrganizer {
+	
 	private final DuplicateResolver duplicateResolver;
 
 	public FileOrganizer(DuplicateResolver duplicateResolver) {
@@ -66,11 +67,11 @@ public class FileOrganizer {
     /**
      * Extrae la extensión de un nombre de archivo (incluyendo el punto, ej. ".jpg").
      */
-    private String getFileExtension(String fileName) {
-        int dotIndex = fileName.lastIndexOf('.');
-        if (dotIndex == -1) {
-            return "";
-        }
-        return fileName.substring(dotIndex);
-    }
+    private String getFileExtension(String FileName) {
+		int dotIndex = FileName.lastIndexOf('.');
+		if(dotIndex == -1) {
+			return "";
+		}
+		return FileName.substring(dotIndex);
+	}
 }
