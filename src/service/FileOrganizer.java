@@ -3,6 +3,7 @@ package service;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -13,6 +14,7 @@ import model.ScanReport;
 public class FileOrganizer {
 
 	private final DuplicateResolver duplicateResolver;
+	
 
 	public FileOrganizer(DuplicateResolver duplicateResolver) {
 		super();
@@ -61,7 +63,35 @@ public class FileOrganizer {
 		}
 	}
 
-	//aqui el metodo organizeFiles
+	/**
+     * Ejecuta la organización física moviendo los archivos a sus carpetas correspondientes.
+     */
+    public void organizeFiles(ScanReport report, List<CategoryRule> rules) throws IOException {
+        Path sourceFolder = report.getRutaCarpeta();
+
+        // Recorremos el mapa de archivos categorizados del reporte
+        for (Map.Entry<String, List<Path>> entry : report.getArchivosCategorizados().entrySet()) {
+            String categoryName = entry.getKey();
+            List<Path> filesToMove = entry.getValue();
+
+            // Creamos la carpeta de destino para esta categoría dentro del directorio origen (ej. /sourceFolder/Documents)
+            Path categoryDir = sourceFolder.resolve(categoryName);
+            if (!Files.exists(categoryDir)) {
+                Files.createDirectories(categoryDir);
+            }
+
+            // Movemos cada archivo aplicando la resolución de duplicados
+            for (Path sourceFile : filesToMove) {
+                Path desiredDestination = categoryDir.resolve(sourceFile.getFileName());
+                
+                // Si ya existe un archivo con el mismo nombre, DuplicateResolver nos da uno único (ej. foto_1.jpg)
+                Path finalDestination = duplicateResolver.resolver(desiredDestination);
+
+                // Movemos el archivo de forma segura en el disco duro
+                Files.move(sourceFile, finalDestination, StandardCopyOption.REPLACE_EXISTING);
+            }
+        }
+    }
 
 
 	/**
